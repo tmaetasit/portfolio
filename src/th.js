@@ -1,4 +1,5 @@
 import { PDPA_LAB_TH } from './content/pdpaLab.js'
+import { OLIST_TH } from './content/olist.js'
 
 // Thai overrides. Same shape as data.js / projects.js; anything not listed here falls back to English.
 
@@ -88,6 +89,7 @@ export const CATEGORIES_TH = [
 // Keyed by slug. Arrays of objects (figures, extras, brands) merge item by item, so keep the same order as projects.js.
 export const PROJECTS_TH = {
   'pdpa-leak-detection-lab': PDPA_LAB_TH,
+  'olist-delivery-intelligence': OLIST_TH,
 
   'traffic-analytics-dashboard': {
     title: 'แดชบอร์ดวิเคราะห์การจราจร',

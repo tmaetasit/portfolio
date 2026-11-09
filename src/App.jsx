@@ -914,6 +914,148 @@ function PdpaPage({ p, next }) {
   )
 }
 
+function OlistPage({ p, next }) {
+  const { t } = useLang()
+  const L = p.labels
+  const [open, setOpen] = useState(null)
+  const [videoOk, setVideoOk] = useState(Boolean(p.links.video))
+  const figs = [
+    ...p.findings.map((f) => ({ src: f.img, title: f.title, note: f.text, alt: f.alt })),
+    ...p.dashboard,
+    ...p.design.map((d) => ({ ...d, note: '' })),
+  ]
+  const nF = p.findings.length
+  const nD = p.dashboard.length
+  const move = useCallback((d) => setOpen((v) => (v == null ? v : (v + d + figs.length) % figs.length)), [figs.length])
+  const close = useCallback(() => setOpen(null), [])
+  const Thumb = ({ i, src, alt, label }) => (
+    <button type="button" className="fig-img" onClick={() => setOpen(i)} aria-label={`${t.enlargeAria}: ${label}`}>
+      <img src={asset(src)} alt={alt} loading="lazy" />
+      <span className="fig-zoom" aria-hidden="true">{t.enlarge}</span>
+    </button>
+  )
+  return (
+    <main className="wrap page olist">
+      <Link to="/" state={{ to: 'work' }} className="back-btn">{t.backGallery}</Link>
+
+      <header className="olist-hero">
+        <p className="eyebrow top-gap">{L.eyebrow}</p>
+        <h1 className="display-sm">{p.title}</h1>
+        <p className="lede">{p.subtitle}</p>
+        <p className="olist-honesty">{p.honesty}</p>
+        <dl className="olist-meta">
+          <div><dt className="mono-label">{L.role}</dt><dd>{p.role}</dd></div>
+          <div><dt className="mono-label">{L.data}</dt><dd>{p.data}</dd></div>
+        </dl>
+        <ul className="tags">{p.allTools.map((x) => <li key={x}>{x}</li>)}</ul>
+        <div className="cta-row">
+          <a className="btn btn-solid" href={p.links.github} target="_blank" rel="noreferrer">{L.github}</a>
+          <a className="btn btn-outline" href={p.links.data} target="_blank" rel="noreferrer">{L.dataset}</a>
+        </div>
+      </header>
+
+      <section className="olist-kpis" aria-label="Key numbers">
+        {p.kpis.map((k) => (
+          <div key={k.value} className="panel olist-kpi">
+            <span className="olist-num">{k.value}</span>
+            <span>{k.label}</span>
+          </div>
+        ))}
+      </section>
+
+      {videoOk && (
+        <section className="olist-sec" aria-labelledby="olist-video">
+          <h2 id="olist-video" className="h-sm">{L.video}</h2>
+          <video className="olist-video" controls preload="metadata" poster={asset(p.links.poster)} onError={() => setVideoOk(false)}>
+            <source src={asset(p.links.video)} type="video/mp4" onError={() => setVideoOk(false)} />
+          </video>
+        </section>
+      )}
+
+      <section className="olist-sec" aria-labelledby="olist-problem">
+        <h2 id="olist-problem" className="h-sm">{L.problem}</h2>
+        <p className="olist-prose">{p.problem}</p>
+      </section>
+
+      <section className="olist-sec" aria-labelledby="olist-approach">
+        <h2 id="olist-approach" className="h-sm">{L.approach}</h2>
+        <ol className="olist-steps">
+          {p.workstreams.map((w) => (
+            <li key={w.id} className="panel olist-step">
+              <span className="olist-step-id mono-label">{w.id}</span>
+              <h3>{w.title}</h3>
+              <p>{w.text}</p>
+            </li>
+          ))}
+        </ol>
+        <p className="mono-label olist-art-label">{L.artefacts}</p>
+        <ul className="tags">{p.artefacts.map((x) => <li key={x}>{x}</li>)}</ul>
+      </section>
+
+      <section className="olist-sec" aria-labelledby="olist-findings">
+        <h2 id="olist-findings" className="h-sm">{L.findings}</h2>
+        <ol className="olist-findings">
+          {p.findings.map((f, i) => (
+            <li key={f.img} className="olist-finding">
+              <div className="olist-finding-text">
+                <span className="olist-finding-n">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{f.title}</h3>
+                <p>{f.text}</p>
+              </div>
+              <figure className="fig"><Thumb i={i} src={f.img} alt={f.alt} label={f.title} /></figure>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="olist-sec" aria-labelledby="olist-dash">
+        <h2 id="olist-dash" className="h-sm">{L.dashboard}</h2>
+        <div className="olist-gallery">
+          {p.dashboard.map((d, j) => (
+            <figure key={d.src} className="fig">
+              <Thumb i={nF + j} src={d.src} alt={d.alt} label={d.title} />
+              <figcaption><strong>{d.title}</strong><span>{d.note}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section className="olist-sec" aria-labelledby="olist-rec">
+        <h2 id="olist-rec" className="h-sm">{L.recommendation}</h2>
+        <ol className="olist-rec">{p.recommendation.map((x) => <li key={x}>{x}</li>)}</ol>
+      </section>
+
+      <section className="olist-sec" aria-labelledby="olist-design">
+        <h2 id="olist-design" className="h-sm">{L.design}</h2>
+        <div className="olist-gallery olist-gallery-sm">
+          {p.design.map((d, j) => (
+            <figure key={d.src} className="fig">
+              <Thumb i={nF + nD + j} src={d.src} alt={d.alt} label={d.title} />
+              <figcaption><strong>{d.title}</strong></figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section className="olist-sec" aria-labelledby="olist-learned">
+        <h2 id="olist-learned" className="h-sm">{L.learned}</h2>
+        <blockquote className="olist-quote">{p.learned}</blockquote>
+      </section>
+
+      <section className="olist-sec" aria-labelledby="olist-ai">
+        <h2 id="olist-ai" className="h-sm">{L.ai}</h2>
+        <ul className="points flow olist-ai">{p.ai.map((x) => <li key={x}>{x}</li>)}</ul>
+      </section>
+
+      <div className="case-next">
+        <span className="muted">{t.nextProject}</span>
+        <Link className="text-link" to={`/projects/${next.slug}`}>{next.title} →</Link>
+      </div>
+      {open != null && <Lightbox figures={figs} index={open} onClose={close} onMove={move} />}
+    </main>
+  )
+}
+
 function CaseStudy() {
   const { t, lang, setLang, cvIds, D: { PROFILE, ABILITIES, EXPERIENCE, EDUCATION, PROJECTS, CATEGORIES } } = useLang()
   const { slug } = useParams()
@@ -929,6 +1071,7 @@ function CaseStudy() {
   }
   const next = PROJECTS[(idx + 1) % PROJECTS.length]
   if (p.layout === 'pdpa') return <PdpaPage p={p} next={next} />
+  if (p.layout === 'olist') return <OlistPage p={p} next={next} />
   if (p.star) return <StudyPage p={p} next={next} />
   const steps = [
     ['Problem', 'What the business needed to know or decide.'],

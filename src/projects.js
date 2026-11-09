@@ -1,4 +1,5 @@
 import { PDPA_LAB } from './content/pdpaLab.js'
+import { OLIST } from './content/olist.js'
 
 // Project content. Every project follows STAR: Situation, Task, Action, Result.
 // `figures` are images in /public/projects. `extras` are extra lists shown after the figures.
@@ -13,6 +14,7 @@ export const CATEGORIES = [
 
 export const PROJECTS = [
   PDPA_LAB,
+  OLIST,
   /* ------------------------------------------------------------------ */
   {
     slug: 'traffic-analytics-dashboard',
