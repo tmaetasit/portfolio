@@ -122,7 +122,7 @@ export const OLIST = {
         items: [
           'Took the 9,195 one- and two-star reviews with a written comment.',
           'Defined 8 complaint types with Portuguese cue words and tie-break rules.',
-          'Built 200 reference labels (AI-labelled; human spot-check pending).',
+          'Built 200 reference labels: first labelled by AI, then every one checked by me.',
           'Tuned the rules on reviews 1–100, tested on 101–200: accuracy 0.88, macro-F1 0.82. A random check of 60 reviews was 77% correct.',
           'A TF-IDF + logistic regression baseline on 100 labels scored macro-F1 0.33, so the rules won.',
         ],
@@ -231,7 +231,7 @@ export const OLIST = {
 
   ai: [
     'Claude helped plan, draft documents and write and debug code; I reviewed every query, measure and number.',
-    'The 200 reference labels for the review classifier were AI-labelled (human spot-check pending).',
+    'The 200 reference labels for the review classifier were first labelled by AI, then I checked all 200 myself.',
     'The classifier itself is transparent Portuguese keyword rules: macro-F1 0.82 on held-out labels.',
   ],
 }
@@ -335,7 +335,7 @@ export const OLIST_TH = {
         items: [
           'ใช้รีวิว 1–2 ดาวที่มีข้อความ 9,195 รายการ',
           'กำหนดประเภทคำร้องเรียน 8 แบบ พร้อมคำสังเกตภาษาโปรตุเกสและกฎตัดสินเมื่อเข้าได้หลายแบบ',
-          'สร้าง label อ้างอิง 200 รายการ (AI เป็นคนติด label ยังรอคนสุ่มตรวจ)',
+          'สร้าง label อ้างอิง 200 รายการ: AI ติด label ก่อน แล้วผมตรวจเองครบทุกรายการ',
           'ปรับกฎด้วยรีวิวที่ 1–100 แล้วทดสอบกับ 101–200: accuracy 0.88, macro-F1 0.82 สุ่มตรวจ 60 รายการถูก 77%',
           'โมเดลพื้นฐาน TF-IDF + logistic regression จาก 100 label ได้ macro-F1 0.33 กฎจึงดีกว่า',
         ],
@@ -406,7 +406,7 @@ export const OLIST_TH = {
 
   ai: [
     'Claude ช่วยวางแผน ร่างเอกสาร และเขียนกับดีบักโค้ด ผมตรวจทุก query ทุก measure และทุกตัวเลขเอง',
-    'Label อ้างอิง 200 รายการสำหรับตัวจัดกลุ่มรีวิวทำโดย AI (ยังรอคนสุ่มตรวจ)',
+    'Label อ้างอิง 200 รายการสำหรับตัวจัดกลุ่มรีวิว AI ติดก่อน แล้วผมตรวจเองครบทั้ง 200 รายการ',
     'ตัวจัดกลุ่มเองเป็นกฎ keyword ภาษาโปรตุเกสที่ตรวจสอบได้: macro-F1 0.82 บน label ที่กันไว้ทดสอบ',
   ],
 }
