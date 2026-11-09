@@ -6,7 +6,7 @@ import { LangProvider } from './i18n.jsx'
 import './styles.css'
 
 createRoot(document.getElementById('root')).render(
-  <HashRouter>
+  <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     <LangProvider>
       <App />
     </LangProvider>

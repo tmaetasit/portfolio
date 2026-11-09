@@ -10,7 +10,7 @@ export const OLIST = {
   layout: 'olist',
   title: 'Olist Delivery Intelligence',
   org: 'Portfolio project',
-  period: 'Data 2016–2018',
+  period: 'Data: 2016 – 2018',
   category: 'analytics',
   visual: 'bars',
   cover: IMG + 'executive_overview.webp',
@@ -239,7 +239,7 @@ export const OLIST = {
 // Thai version. Same shape; anything not listed stays English. Arrays merge item by item.
 export const OLIST_TH = {
   org: 'โปรเจกต์ portfolio',
-  period: 'ข้อมูลปี 2016–2018',
+  period: 'ข้อมูล: 2016 – 2018',
   blurb:
     'ทำไมลูกค้าให้รีวิวแย่ ออเดอร์ไหนจะส่งช้า และวิธีแก้ไหนคืนทุนก่อน งานวิเคราะห์ธุรกิจตั้งแต่ต้นจนจบที่ทำคนเดียว จากออเดอร์จริงที่ส่งถึงแล้ว 96,203 รายการ',
   subtitle: 'ทำไมลูกค้าให้รีวิวแย่ ออเดอร์ไหนจะส่งช้า และวิธีแก้ไหนคืนทุนก่อน',

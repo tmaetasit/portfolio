@@ -50,6 +50,11 @@ export const ABILITIES_TH = [
     text: 'สร้างต้นแบบที่นำผลวิเคราะห์ไปถึงมือผู้ใช้',
     items: ['React', 'Figma', 'Git', 'พื้นฐาน RAG / LLM'],
   },
+  {
+    title: 'ความปลอดภัยและการคุ้มครองข้อมูล',
+    text: 'สร้างแล็บที่ตรวจจับข้อมูลส่วนบุคคลที่หลุดออกจากเครื่องปลายทาง ด้วยแนวคิดเดียวกับ DLP, SWG และ EDR',
+    items: ['Wazuh (SIEM)', 'Sysmon', 'mitmproxy', 'ISO/IEC 27001 / 27701', 'PDPA', 'วิเคราะห์ log'],
+  },
 ]
 
 export const EXPERIENCE_TH = [

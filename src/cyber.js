@@ -42,7 +42,7 @@ export const CYBER = {
       { step: '04', title: 'Current focus', text: 'The emerging security challenges where AI meets data privacy, such as keeping sensitive data out of external AI services.' },
     ],
 
-    ctaTitle: 'Looking for a junior security engineer?',
+    ctaTitle: 'Looking for a Junior Cyber Security Engineer?',
     ctaText: 'I am open to Junior Cyber Security Engineer roles and ready to learn fast on a real security team.',
     ctaContact: 'Get in touch',
     resume: 'Download CV (Cyber Security) ↓',
@@ -86,7 +86,7 @@ export const CYBER = {
       { title: 'สิ่งที่สนใจตอนนี้', text: 'ความท้าทายด้านความปลอดภัยที่เกิดขึ้นใหม่ระหว่าง AI กับความเป็นส่วนตัวของข้อมูล เช่น การไม่ให้ข้อมูลสำคัญหลุดไปยังบริการ AI ภายนอก' },
     ],
 
-    ctaTitle: 'กำลังมองหา Junior Security Engineer อยู่ไหม',
+    ctaTitle: 'กำลังมองหา Junior Cyber Security Engineer อยู่ไหม',
     ctaText: 'พร้อมร่วมงานในตำแหน่ง Junior Cyber Security Engineer และพร้อมเรียนรู้อย่างรวดเร็วกับทีมความปลอดภัยจริง',
     ctaContact: 'ติดต่อผม',
     resume: 'ดาวน์โหลด CV (Cyber Security) ↓',

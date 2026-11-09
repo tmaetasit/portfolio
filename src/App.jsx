@@ -366,12 +366,13 @@ function Abilities() {
     <section id="what-i-do" className="section wrap" aria-labelledby="do-title">
       <p className="eyebrow">{t.doEyebrow}</p>
       <h2 id="do-title">{t.doTitle}</h2>
-      <div className="grid-3">
+      <div className="grid-3 grid-abilities">
         {ABILITIES.map((a) => (
           <article key={a.title} className="panel">
             <h3>{a.title}</h3>
             <p>{a.text}</p>
-            <ul className="tags">{a.items.map((t) => <li key={t}>{t}</li>)}</ul>
+            <ul className="tags">{a.items.map((x) => <li key={x}>{x}</li>)}</ul>
+            {a.link && <Link className="text-link ability-link" to={a.link}>{t.abilityLink}</Link>}
           </article>
         ))}
       </div>
@@ -419,6 +420,15 @@ function CvMenu({ className = 'btn btn-outline', align = 'left' }) {
   const { t, D: { PROFILE } } = useLang()
   const ref = useRef(null)
   const items = cvList(PROFILE)
+  const [side, setSide] = useState(align)
+  // Open toward whichever side has room, so the menu never runs off a phone screen.
+  const place = () => {
+    const el = ref.current
+    if (!el || !el.open) return
+    const r = el.getBoundingClientRect()
+    const w = Math.min(300, window.innerWidth - 32)
+    setSide(r.left + w > window.innerWidth - 16 ? 'right' : 'left')
+  }
   useEffect(() => {
     const close = (e) => { if (ref.current && ref.current.open && !ref.current.contains(e.target)) ref.current.open = false }
     const esc = (e) => { if (e.key === 'Escape' && ref.current?.open) { ref.current.open = false; ref.current.querySelector('summary')?.focus() } }
@@ -428,7 +438,7 @@ function CvMenu({ className = 'btn btn-outline', align = 'left' }) {
   }, [])
   if (!items.length) return null
   return (
-    <details className={`cv-menu cv-${align}`} ref={ref}>
+    <details className={`cv-menu cv-${side}`} ref={ref} onToggle={place}>
       <summary className={className}>{t.cvMenu} <span className="cv-caret" aria-hidden="true">▾</span></summary>
       <div className="cv-pop" role="menu" aria-label={t.cvMenuHint}>
         <p className="mono-label">{t.cvMenuHint}</p>
@@ -590,7 +600,7 @@ function Archive() {
           <li key={p.slug}>
             <Link to={`/projects/${p.slug}`} className="archive-row">
               <div>
-                <h3>{p.title}</h3>
+                <h2 className="archive-title">{p.title}</h2>
                 <p>{p.blurb}</p>
                 <ul className="tags">{p.tools.map((t) => <li key={t}>{t}</li>)}</ul>
               </div>
@@ -1108,6 +1118,35 @@ function OlistPage({ p, next }) {
   )
 }
 
+function NotFound({ title }) {
+  const { t } = useLang()
+  return (
+    <main className="wrap page not-found">
+      <p className="eyebrow">404</p>
+      <h1 className="display-sm">{title || t.pageNotFound}</h1>
+      <p className="lede">{t.notFoundText}</p>
+      <div className="cta-row">
+        <Link className="btn btn-solid" to="/">{t.goHome}</Link>
+        <Link className="btn btn-outline" to="/projects">{t.backAll}</Link>
+      </div>
+    </main>
+  )
+}
+
+function usePageTitle() {
+  const { t, lang, D: { PROFILE, PROJECTS } } = useLang()
+  const { pathname } = useLocation()
+  useEffect(() => {
+    let page
+    if (pathname === '/') page = t.titles.home
+    else if (pathname === '/projects') page = t.titles.projects
+    else if (pathname === '/cybersecurity') page = t.titles.cyber
+    else if (pathname.startsWith('/projects/')) page = PROJECTS.find((p) => `/projects/${p.slug}` === pathname)?.title || t.titles.notFound
+    else page = t.titles.notFound
+    document.title = pathname === '/' ? `${PROFILE.name} | ${page}` : `${page} | ${PROFILE.name}`
+  }, [pathname, lang])
+}
+
 function CaseStudy() {
   const { t, lang, setLang, cvIds, D: { PROFILE, ABILITIES, EXPERIENCE, EDUCATION, PROJECTS, CATEGORIES } } = useLang()
   const { slug } = useParams()
@@ -1115,10 +1154,7 @@ function CaseStudy() {
   const p = PROJECTS[idx]
   if (!p) {
     return (
-      <main className="wrap page">
-        <h1 className="display-sm">{t.notFound}</h1>
-        <Link className="text-link" to="/projects">{t.backAll}</Link>
-      </main>
+      <NotFound title={t.notFound} />
     )
   }
   const next = PROJECTS[(idx + 1) % PROJECTS.length]
@@ -1324,6 +1360,7 @@ export default function App() {
   const { t } = useLang()
   const { pathname } = useLocation()
   useSpotlight()
+  usePageTitle()
   return (
     <>
       <Progress />
@@ -1336,7 +1373,7 @@ export default function App() {
           <Route path="/projects" element={<Archive />} />
           <Route path="/projects/:slug" element={<CaseStudy />} />
           <Route path="/cybersecurity" element={<CyberPage />} />
-          <Route path="*" element={<Archive />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <Footer />

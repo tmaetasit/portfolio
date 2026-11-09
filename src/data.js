@@ -59,6 +59,12 @@ export const ABILITIES = [
     text: 'Prototypes that put analysis in front of users.',
     items: ['React', 'Figma', 'Git', 'RAG / LLM basics'],
   },
+  {
+    title: 'Security and Data Privacy',
+    text: 'A home lab that detects personal data leaving an endpoint, built on the same ideas as DLP, SWG and EDR.',
+    items: ['Wazuh (SIEM)', 'Sysmon', 'mitmproxy', 'ISO/IEC 27001 / 27701', 'PDPA', 'Log analysis'],
+    link: '/cybersecurity',
+  },
 ]
 
 export const EXPERIENCE = [

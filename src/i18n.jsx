@@ -43,8 +43,8 @@ const UI = {
     carouselAria: 'Project gallery. Use the left and right arrow keys.', open: 'Open', viewCase: 'View case study →',
     prevProject: 'Previous project', nextProjectAria: 'Next project', viewProject: 'View project →', chooseProject: 'Choose project',
     placeholderNote: 'Projects without screenshots yet show placeholder artwork.', coverAlt: 'preview',
-    workEyebrow: 'Selected work', workTitle: 'Work gallery', workSub: 'Dashboards, analyses and prototypes from two internships.', allProjects: 'All projects ↗',
-    doEyebrow: 'What I can do', doTitle: 'Three ways I help a team',
+    workEyebrow: 'Selected work', workTitle: 'Work gallery', workSub: 'Case studies from two internships and my own projects: dashboards, business analysis, AI and security.', allProjects: 'All projects ↗',
+    doEyebrow: 'What I can do', doTitle: 'Four ways I help a team',
     aboutEyebrow: 'About me', aboutTitle: 'Turning raw data into decisions.', wantDetails: 'Want the details? Download my CV: ', downloadMyResume: 'Download my resume', currently: 'Currently',
     cvGroups: { tech: 'Technical skills', ba: 'Business analysis skills' },
     cvLabels: {
@@ -58,14 +58,15 @@ const UI = {
     contactLede: 'Looking for the next problem worth solving. I am open to data analyst, business analyst and junior cyber security engineer roles where I can turn data and stakeholder needs into decisions.',
     downloadResumeArrow: 'Download resume →', email: 'Email', copyEmail: 'Copy email', copied: 'Copied',
     backToTop: 'Back to top ↑',
-    archiveEyebrow: 'Archive', archiveTitle: 'All projects', archiveSub: 'A complete list of analytics and technical work.', filterAria: 'Filter projects',
+    archiveEyebrow: 'Archive', archiveTitle: 'All projects', archiveSub: 'Every case study: analytics, business analysis, AI and security.', filterAria: 'Filter projects',
     star: { situation: 'Situation', task: 'Task', action: 'Action', result: 'Result' },
     cmpTitle: 'Competitive summary', cmpSub: 'Facebook pages, ', cmpPosts: 'Posts in the three months', cmpFollowers: 'Followers',
     cmpBrands: 'Engagement by brand', client: 'Client', competitor: 'Competitor', chartsShow: 'What the charts show', contentHabits: 'Content habits',
     allFour: 'All four brands', avgEngagement: 'Average engagement',
     brandAlt: 'likes, comments and shares by month, engagement by day, and post categories', avgAlt: 'Average monthly engagement for the four brands',
     backGallery: '← Back to work gallery', theWork: 'The work', enlarge: 'Enlarge', enlargeAria: 'Enlarge', nextProject: 'Next project',
-    notFound: 'Project not found', backAll: 'Back to all projects',
+    notFound: 'Project not found', backAll: 'Back to all projects', pageNotFound: 'Page not found', notFoundText: 'The link may be out of date, or the page has moved.', goHome: 'Go to the home page', abilityLink: 'See the Cybersecurity page →',
+    titles: { home: 'Data Analyst, Business Analyst & Junior Cyber Security Engineer', projects: 'All projects', cyber: 'Cybersecurity', notFound: 'Page not found' },
     close: 'Close', prev: '← Previous', next: 'Next →',
   },
   th: {
@@ -77,8 +78,8 @@ const UI = {
     carouselAria: 'แกลเลอรีผลงาน ใช้ปุ่มลูกศรซ้ายขวาเพื่อเลื่อน', open: 'เปิด', viewCase: 'ดูรายละเอียด →',
     prevProject: 'โปรเจกต์ก่อนหน้า', nextProjectAria: 'โปรเจกต์ถัดไป', viewProject: 'ดูโปรเจกต์ →', chooseProject: 'เลือกโปรเจกต์',
     placeholderNote: 'โปรเจกต์ที่ยังไม่มีภาพหน้าจอจะแสดงภาพตัวอย่างแทน', coverAlt: 'ภาพตัวอย่าง',
-    workEyebrow: 'ผลงานที่คัดมา', workTitle: 'แกลเลอรีผลงาน', workSub: 'แดชบอร์ด งานวิเคราะห์ และต้นแบบจากการฝึกงาน 2 แห่ง', allProjects: 'ผลงานทั้งหมด ↗',
-    doEyebrow: 'ความสามารถ', doTitle: 'สามด้านที่ผมช่วยทีมได้',
+    workEyebrow: 'ผลงานที่คัดมา', workTitle: 'แกลเลอรีผลงาน', workSub: 'กรณีศึกษาจากการฝึกงาน 2 แห่งและโปรเจกต์ส่วนตัว ทั้งแดชบอร์ด การวิเคราะห์ธุรกิจ AI และความปลอดภัย', allProjects: 'ผลงานทั้งหมด ↗',
+    doEyebrow: 'ความสามารถ', doTitle: 'สี่ด้านที่ผมช่วยทีมได้',
     aboutEyebrow: 'เกี่ยวกับผม', aboutTitle: 'เปลี่ยนข้อมูลดิบให้เป็นการตัดสินใจ', wantDetails: 'ดูรายละเอียดเพิ่มเติม ดาวน์โหลด CV: ', downloadMyResume: 'ดาวน์โหลดเรซูเม่', currently: 'ตอนนี้',
     cvGroups: { tech: 'ทักษะด้านเทคนิค', ba: 'ทักษะด้านการวิเคราะห์ธุรกิจ' },
     cvLabels: {
@@ -92,14 +93,15 @@ const UI = {
     contactLede: 'กำลังมองหาโจทย์ใหม่ที่ท้าทาย พร้อมร่วมงานในตำแหน่ง Data Analyst, Business Analyst และ Junior Cyber Security Engineer ที่ได้เปลี่ยนข้อมูลและความต้องการของผู้เกี่ยวข้องให้เป็นการตัดสินใจ',
     downloadResumeArrow: 'ดาวน์โหลดเรซูเม่ →', email: 'อีเมล', copyEmail: 'คัดลอกอีเมล', copied: 'คัดลอกแล้ว',
     backToTop: 'กลับขึ้นด้านบน ↑',
-    archiveEyebrow: 'รวมผลงาน', archiveTitle: 'ผลงานทั้งหมด', archiveSub: 'รายการงานวิเคราะห์ข้อมูลและงานเทคนิคทั้งหมด', filterAria: 'กรองผลงาน',
+    archiveEyebrow: 'รวมผลงาน', archiveTitle: 'ผลงานทั้งหมด', archiveSub: 'กรณีศึกษาทั้งหมด ทั้งงานวิเคราะห์ข้อมูล วิเคราะห์ธุรกิจ AI และความปลอดภัย', filterAria: 'กรองผลงาน',
     star: { situation: 'สถานการณ์', task: 'โจทย์', action: 'สิ่งที่ทำ', result: 'ผลลัพธ์' },
     cmpTitle: 'สรุปภาพรวมการแข่งขัน', cmpSub: 'เพจ Facebook ช่วง ', cmpPosts: 'จำนวนโพสต์ใน 3 เดือน', cmpFollowers: 'ผู้ติดตาม',
     cmpBrands: 'Engagement รายแบรนด์', client: 'ลูกค้า', competitor: 'คู่แข่ง', chartsShow: 'สิ่งที่กราฟบอก', contentHabits: 'ลักษณะคอนเทนต์',
     allFour: 'ทั้ง 4 แบรนด์', avgEngagement: 'Engagement เฉลี่ย',
     brandAlt: 'ไลก์ คอมเมนต์ และแชร์รายเดือน engagement รายวัน และประเภทโพสต์', avgAlt: 'Engagement เฉลี่ยต่อเดือนของทั้ง 4 แบรนด์',
     backGallery: '← กลับไปที่แกลเลอรีผลงาน', theWork: 'ตัวอย่างงาน', enlarge: 'ขยาย', enlargeAria: 'ขยายภาพ', nextProject: 'โปรเจกต์ถัดไป',
-    notFound: 'ไม่พบโปรเจกต์', backAll: 'กลับไปที่ผลงานทั้งหมด',
+    notFound: 'ไม่พบโปรเจกต์', backAll: 'กลับไปที่ผลงานทั้งหมด', pageNotFound: 'ไม่พบหน้านี้', notFoundText: 'ลิงก์อาจเก่าแล้ว หรือหน้านี้ถูกย้ายไป', goHome: 'กลับหน้าแรก', abilityLink: 'ดูหน้า Cybersecurity →',
+    titles: { home: 'Data Analyst, Business Analyst และ Junior Cyber Security Engineer', projects: 'ผลงานทั้งหมด', cyber: 'Cybersecurity', notFound: 'ไม่พบหน้านี้' },
     close: 'ปิด', prev: '← ก่อนหน้า', next: 'ถัดไป →',
   },
 }
@@ -122,7 +124,6 @@ export function LangProvider({ children }) {
   }
   useEffect(() => {
     document.documentElement.lang = lang
-    document.title = DATA[lang].PROFILE.name
   }, [lang])
   const value = useMemo(() => ({ lang, setLang, t: UI[lang], D: DATA[lang], cvIds: CV_SKILL_IDS }), [lang])
   return <LangContext.Provider value={value}>{children}</LangContext.Provider>
