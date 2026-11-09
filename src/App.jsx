@@ -232,9 +232,7 @@ function Hero() {
           <div className="cta-row">
             <a href="#work" className="btn btn-solid" onClick={(e) => { e.preventDefault(); goTo('work') }}>{t.viewWork}</a>
             <a href="#contact" className="btn btn-outline" onClick={(e) => { e.preventDefault(); goTo('contact') }}>{t.getInTouch}</a>
-            {PROFILE.resumeUrl && (
-              <a href={PROFILE.resumeUrl} className="btn btn-ghost" target="_blank" rel="noreferrer">{t.downloadResume}</a>
-            )}
+            <CvMenu className="btn btn-ghost" />
           </div>
         </div>
         <figure className="portrait">
@@ -409,6 +407,41 @@ function CvSkills() {
   )
 }
 
+function cvList(PROFILE) {
+  return [
+    ['data', PROFILE.resumeUrl],
+    ['ba', PROFILE.resumeBaUrl],
+    ['cyber', PROFILE.resumeCyberUrl],
+  ].filter(([, u]) => u)
+}
+
+function CvMenu({ className = 'btn btn-outline', align = 'left' }) {
+  const { t, D: { PROFILE } } = useLang()
+  const ref = useRef(null)
+  const items = cvList(PROFILE)
+  useEffect(() => {
+    const close = (e) => { if (ref.current && ref.current.open && !ref.current.contains(e.target)) ref.current.open = false }
+    const esc = (e) => { if (e.key === 'Escape' && ref.current?.open) { ref.current.open = false; ref.current.querySelector('summary')?.focus() } }
+    document.addEventListener('click', close)
+    document.addEventListener('keydown', esc)
+    return () => { document.removeEventListener('click', close); document.removeEventListener('keydown', esc) }
+  }, [])
+  if (!items.length) return null
+  return (
+    <details className={`cv-menu cv-${align}`} ref={ref}>
+      <summary className={className}>{t.cvMenu} <span className="cv-caret" aria-hidden="true">▾</span></summary>
+      <div className="cv-pop" role="menu" aria-label={t.cvMenuHint}>
+        <p className="mono-label">{t.cvMenuHint}</p>
+        {items.map(([k, u]) => (
+          <a key={k} role="menuitem" href={asset(u)} target="_blank" rel="noreferrer" onClick={() => { if (ref.current) ref.current.open = false }}>
+            <span>{t.cvRoles[k]}</span><span aria-hidden="true">PDF ↓</span>
+          </a>
+        ))}
+      </div>
+    </details>
+  )
+}
+
 function About() {
   const { t, lang, setLang, cvIds, D: { PROFILE, ABILITIES, EXPERIENCE, EDUCATION, PROJECTS, CATEGORIES } } = useLang()
   return (
@@ -423,9 +456,9 @@ function About() {
         </div>
         <div className="about-copy">
           {PROFILE.about.map((t) => <p key={t}>{t}</p>)}
-          {PROFILE.resumeUrl && (
-            <p>{t.wantDetails}<a className="text-link" href={PROFILE.resumeUrl} target="_blank" rel="noreferrer">{t.downloadMyResume}</a></p>
-          )}
+          <p className="cv-inline">{t.wantDetails}{cvList(PROFILE).map(([k, u], i) => (
+            <Fragment key={k}>{i > 0 && <span aria-hidden="true"> · </span>}<a className="text-link" href={asset(u)} target="_blank" rel="noreferrer">{t.cvRoles[k]}</a></Fragment>
+          ))}</p>
           <ul className="now" aria-label={t.currently}>
             {PROFILE.currently.map((c) => (
               <li key={c.k}>
@@ -475,9 +508,7 @@ function Contact() {
         <p className="status"><span className="pulse" aria-hidden="true" />{PROFILE.status}</p>
         <h2 id="contact-title" className="display-sm">{t.contactTitle}</h2>
         <p className="lede">{t.contactLede}</p>
-        {PROFILE.resumeUrl && (
-          <a href={PROFILE.resumeUrl} className="btn btn-light" target="_blank" rel="noreferrer">{t.downloadResumeArrow}</a>
-        )}
+        <CvMenu className="btn btn-light" />
       </div>
       <div className="contact-cards">
         <div className="panel contact-card">

@@ -11,6 +11,7 @@ export const PROFILE = {
   // Put a web-safe resume PDF in /public and set e.g. '/Maetasit_Pittatanang_Resume.pdf'.
   // While empty, the "Download resume" buttons stay hidden.
   resumeUrl: 'Maetasit_Pittatanang_Resume.pdf',
+  resumeBaUrl: 'Maetasit_Pittatanang_BA_Resume.pdf',
   resumeCyberUrl: 'Maetasit_Pittatanang_CyberSecurity_Resume.pdf',
   github: 'https://github.com/tmaetasit',
   photo: 'img/portrait.webp',
@@ -36,9 +37,9 @@ export const PROFILE = {
     { value: '2026', label: 'Graduated' },
   ],
   currently: [
-    { k: 'Building', v: 'Analytics dashboards' },
-    { k: 'Exploring', v: 'LLM and RAG tools' },
-    { k: 'Learning', v: 'SQL and machine learning' },
+    { k: 'Built', v: 'A PDPA data leak detection lab (Wazuh, Sysmon, mitmproxy)' },
+    { k: 'Analyzed', v: 'Olist delivery delays as a Business Analyst case study' },
+    { k: 'Studying', v: 'ISO/IEC 27001 and 27701, DLP, EDR and SWG / CASB' },
   ],
 }
 
@@ -79,6 +80,15 @@ export const EXPERIENCE = [
       'Cleaned and consolidated raw market data with Python, then built interactive social media dashboards that turned competitive trends into decision-ready insights.',
       'Analyzed FMCG media spending and Share of Voice across brands to find market trends and media strategy opportunities.',
       'Worked with a cross-functional team on a travel recommendation web application, focusing on user experience and user requirements.',
+    ],
+  },
+  {
+    org: 'Production Company',
+    role: 'Production Admin / Coordinator',
+    period: '2019 – 2020',
+    points: [
+      'Served as the point of contact between clients and production supervisors, coordinating requests to keep the production queue moving.',
+      'Tracked customer orders end to end in Excel, keeping the records accurate and orders delivered on time.',
     ],
   },
 ]
