@@ -42,6 +42,10 @@ export const OLIST = {
     video: 'Video walkthrough (3 min)',
     problem: 'The problem',
     approach: 'Approach: 5 workstreams',
+    build: 'How I worked, step by step',
+    simple: 'In simple terms',
+    details: 'Technical details',
+    outcome: 'Result',
     artefacts: 'BA artefacts',
     findings: 'Key findings',
     dashboard: 'Power BI dashboard',
@@ -69,6 +73,99 @@ export const OLIST = {
     { id: 'WS4', title: 'Design and Prove', text: 'Excel business case (scenarios, sensitivity, break-even), FRD, To-Be process, wireframes, A/B pilot design.' },
   ],
   artefacts: ['Project charter', 'BRD v0.2', 'KPI dictionary (18 KPIs)', '10 user stories with acceptance criteria', 'Stakeholder map + RACI'],
+
+  // "How I worked": one step per stage, plain-language summary first
+  build: {
+    intro: 'The project ran in seven stages, from framing the question to a recommendation. Each step starts with a plain-language summary; open it for the technical details.',
+    steps: [
+      {
+        day: 'Step 1',
+        title: 'Frame the problem before touching charts',
+        simple: 'Before building anything, I profiled the data and wrote down which business questions the work must answer, who cares about them, and how success is measured.',
+        items: [
+          'Profiled all 9 CSV files: 99,092 orders in the analysis window, 96,203 delivered.',
+          'An early signal changed the question: two in three bad reviews come from orders that arrived on time, so speed alone could not be the answer.',
+          'Wrote the project charter, BRD v0.2, a KPI dictionary of 18 KPIs and 10 user stories with acceptance criteria.',
+          'Drew a stakeholder map and RACI. The stakeholders are simulated, and labelled as such.',
+        ],
+        result: 'Clear business questions and KPIs agreed before any analysis.',
+      },
+      {
+        day: 'Step 2',
+        title: 'WS0 · Build data I can trust',
+        simple: 'Raw data has mistakes. I moved it through clean layers in SQL and tested it, marking bad rows instead of quietly deleting them, so every number can be traced.',
+        items: [
+          'SQLite pipeline in three layers: raw → staging (typed, de-duplicated, translated) → a star schema with fact_orders, fact_order_items and dimension tables.',
+          'Logged 13 data issues in a cleaning log, for example 189 orders with out-of-order timestamps (flagged and kept out of timing KPIs) and 547 orders with more than one review (latest kept).',
+          'Derived the fields the analysis needs: is_late, late seller handover, days per stage, ETA buffer and seller-to-customer distance.',
+          'Wrote 19 data-quality tests, including revenue reconciling to raw item prices; all 19 pass.',
+        ],
+        result: 'A tested star schema and clean CSVs for Power BI.',
+      },
+      {
+        day: 'Step 3',
+        title: 'WS1 · Find where the delay happens',
+        simple: 'I split each delivery into stages, payment, seller and carrier, to see which stage eats the time, then asked why some regions miss the promised date more.',
+        items: [
+          'Power BI report with 3 pages and 24 DAX measures on the star schema; every chart title states its finding.',
+          'Process mining with pm4py: 98.6% of orders follow the expected path placed → approved → handed to carrier → delivered.',
+          'Driver tree of the 6,529 late orders: 27.7% had a late seller handover, 72.3% had an on-time seller and were still late.',
+          'A late handover raises the late rate from 5.4% to 21.1%, so sellers still matter.',
+          'Across states, late rate moves with the ETA buffer (r = −0.72): the promise does not fit each route.',
+        ],
+        result: 'Late orders lose the time in carrier transit, and the promise is not calibrated by route.',
+      },
+      {
+        day: 'Step 4',
+        title: 'WS2 · Read what unhappy customers write',
+        simple: 'Thousands of reviews are too many to read by hand, so I built simple Portuguese keyword rules that sort each complaint into a type, and tested how often the rules are right.',
+        items: [
+          'Took the 9,195 one- and two-star reviews with a written comment.',
+          'Defined 8 complaint types with Portuguese cue words and tie-break rules.',
+          'Built 200 reference labels (AI-labelled; human spot-check pending).',
+          'Tuned the rules on reviews 1–100, tested on 101–200: accuracy 0.88, macro-F1 0.82. A random check of 60 reviews was 77% correct.',
+          'A TF-IDF + logistic regression baseline on 100 labels scored macro-F1 0.33, so the rules won.',
+        ],
+        result: '60% of complaints on on-time orders are about the product or fulfilment; in multi-seller orders, 48% say an item is missing.',
+      },
+      {
+        day: 'Step 5',
+        title: 'WS3 · Test whether a late order can be predicted',
+        simple: 'I trained a model to flag risky orders at payment, using only information known at that moment, and tested it on later months it had never seen.',
+        items: [
+          'Features known at payment approval only: promised days, distance, states, category, price, freight, weight, timing and seller history.',
+          'Time-based split: trained on Jan 2017 – Mar 2018 (64,034 orders), tested on Apr – Aug 2018 (31,985 orders).',
+          'Leakage control: seller history uses only orders delivered before the order was placed.',
+          'Compared random, a seller-history rule, logistic regression and LightGBM; chose logistic regression (24.6% of late orders found in the top 10% risk, precision 10.9%).',
+          'Checked drivers with SHAP and wrote a model card with limits: recall swung from 38.6% to 7.1% by month.',
+        ],
+        result: 'Conditional go: useful for low-cost actions only, never for penalising sellers.',
+      },
+      {
+        day: 'Step 6',
+        title: 'WS4 · Decide what to build, and prove it pays',
+        simple: 'I put each fix into a simple money model, kept the ones that make sense, wrote the requirements, and designed a fair test to prove the result before a full rollout.',
+        items: [
+          'Excel business case with scenarios, sensitivity and break-even: the early-warning system loses R$ 40,528 in year 1 (base case) and breaks even only at 12.7× today’s volume, so it is parked.',
+          'Recommended a route-calibrated delivery promise and a seller handover SLA with tiers A/B/C.',
+          'FRD with 8 functional requirements, e.g. a weekly route table built from the 85th-percentile transit time of the last 90 days.',
+          'To-Be process, seller portal and ops dashboard wireframes.',
+          'A/B pilot design: 4,219 orders per arm (8,438 in total), about 6 weeks, with a guardrail that checkout conversion must not fall by more than 1 point.',
+        ],
+        result: 'A costed recommendation and a pilot ready to run. Costs and pilot are simulated and labelled.',
+      },
+      {
+        day: 'Step 7',
+        title: 'Tell the story',
+        simple: 'Made the results easy to take in for different readers: a short deck, a video and this page.',
+        items: [
+          '10-slide executive deck and a 3-minute captioned video.',
+          'GitHub README with every result linked to its evidence, plus steps to reproduce the work.',
+        ],
+        result: 'The story can be told in 30 seconds or defended in detail.',
+      },
+    ],
+  },
 
   findings: [
     {
@@ -159,6 +256,10 @@ export const OLIST_TH = {
     video: 'วิดีโอสรุปงาน (3 นาที)',
     problem: 'ปัญหา',
     approach: 'แนวทาง: 5 workstream',
+    build: 'ขั้นตอนการทำงานทีละขั้น',
+    simple: 'อธิบายแบบง่าย',
+    details: 'รายละเอียดทางเทคนิค',
+    outcome: 'ผลลัพธ์',
     artefacts: 'เอกสาร BA',
     findings: 'สิ่งที่ค้นพบ',
     dashboard: 'Dashboard ใน Power BI',
@@ -186,6 +287,98 @@ export const OLIST_TH = {
     { text: 'Business case ใน Excel (สถานการณ์, sensitivity, จุดคุ้มทุน), FRD, กระบวนการ To-Be, wireframe และการออกแบบ A/B pilot' },
   ],
   artefacts: ['Project charter', 'BRD v0.2', 'KPI dictionary (18 KPI)', 'User story 10 เรื่องพร้อม acceptance criteria', 'Stakeholder map + RACI'],
+
+  build: {
+    intro: 'งานนี้แบ่งเป็น 7 ขั้น ตั้งแต่ตั้งโจทย์จนถึงข้อเสนอแนะ แต่ละขั้นเริ่มด้วยคำอธิบายแบบเข้าใจง่าย กดเปิดเพื่อดูรายละเอียดทางเทคนิค',
+    steps: [
+      {
+        day: 'ขั้นที่ 1',
+        title: 'ตั้งโจทย์ให้ชัดก่อนทำกราฟ',
+        simple: 'ก่อนสร้างอะไร ผมสำรวจข้อมูลก่อน แล้วเขียนให้ชัดว่างานนี้ต้องตอบคำถามธุรกิจข้อไหน ใครสนใจ และวัดความสำเร็จอย่างไร',
+        items: [
+          'สำรวจไฟล์ CSV ทั้ง 9 ไฟล์: 99,092 ออเดอร์ในช่วงที่วิเคราะห์ ส่งถึงแล้ว 96,203 รายการ',
+          'สัญญาณแรกเปลี่ยนโจทย์: รีวิวแย่ 2 ใน 3 มาจากออเดอร์ที่ส่งตรงเวลา ความเร็วอย่างเดียวจึงไม่ใช่คำตอบ',
+          'เขียน project charter, BRD v0.2, KPI dictionary 18 KPI และ user story 10 เรื่องพร้อม acceptance criteria',
+          'ทำ stakeholder map และ RACI โดยผู้มีส่วนได้ส่วนเสียเป็นการจำลอง และระบุไว้ชัดเจน',
+        ],
+        result: 'คำถามธุรกิจและ KPI ชัดเจนก่อนเริ่มวิเคราะห์',
+      },
+      {
+        day: 'ขั้นที่ 2',
+        title: 'WS0 · สร้างข้อมูลที่เชื่อถือได้',
+        simple: 'ข้อมูลดิบมีจุดผิด ผมจึงส่งข้อมูลผ่านชั้นทำความสะอาดด้วย SQL และทดสอบ โดยติดธงแถวที่มีปัญหาแทนการลบทิ้งเงียบๆ ทุกตัวเลขจึงย้อนตรวจได้',
+        items: [
+          'Pipeline ใน SQLite 3 ชั้น: raw → staging (แปลงชนิดข้อมูล ตัดข้อมูลซ้ำ แปลชื่อ) → star schema มี fact_orders, fact_order_items และตาราง dimension',
+          'บันทึกปัญหาข้อมูล 13 ข้อใน cleaning log เช่น 189 ออเดอร์ที่เวลาเรียงผิดลำดับ (ติดธงและไม่นับใน KPI ด้านเวลา) และ 547 ออเดอร์ที่มีรีวิวมากกว่าหนึ่งรายการ (เก็บรีวิวล่าสุด)',
+          'สร้างฟิลด์ที่ใช้วิเคราะห์: ส่งช้าหรือไม่ ผู้ขายส่งมอบช้าหรือไม่ จำนวนวันแต่ละขั้น เวลาที่เผื่อในวันสัญญา และระยะทางผู้ขายถึงลูกค้า',
+          'เขียน data-quality test 19 ข้อ รวมถึงตรวจว่ารายได้ตรงกับราคาสินค้าในข้อมูลดิบ ผ่านครบ 19 ข้อ',
+        ],
+        result: 'Star schema ที่ผ่านการทดสอบ และไฟล์ CSV สะอาดสำหรับ Power BI',
+      },
+      {
+        day: 'ขั้นที่ 3',
+        title: 'WS1 · หาว่าความล่าช้าเกิดที่ไหน',
+        simple: 'ผมแยกการส่งแต่ละครั้งเป็นขั้น คือ ชำระเงิน ผู้ขาย และบริษัทขนส่ง เพื่อดูว่าขั้นไหนกินเวลา แล้วหาว่าทำไมบางภูมิภาคพลาดวันสัญญาบ่อยกว่า',
+        items: [
+          'รายงาน Power BI 3 หน้า DAX 24 measure บน star schema ทุกกราฟตั้งชื่อเป็นข้อค้นพบ',
+          'Process mining ด้วย pm4py: 98.6% ของออเดอร์เดินตามเส้นทางปกติ สั่ง → อนุมัติ → ส่งให้ขนส่ง → ส่งถึง',
+          'Driver tree ของออเดอร์ที่ช้า 6,529 รายการ: 27.7% ผู้ขายส่งมอบช้า 72.3% ผู้ขายส่งตรงเวลาแต่ยังช้า',
+          'การส่งมอบช้าทำให้อัตราส่งช้าเพิ่มจาก 5.4% เป็น 21.1% ผู้ขายจึงยังสำคัญ',
+          'ระหว่างรัฐ อัตราส่งช้าขยับตามเวลาที่เผื่อในวันสัญญา (r = −0.72) วันสัญญาไม่เหมาะกับแต่ละเส้นทาง',
+        ],
+        result: 'ออเดอร์ที่ช้าเสียเวลาที่การขนส่ง และวันสัญญาไม่ได้ปรับตามเส้นทาง',
+      },
+      {
+        day: 'ขั้นที่ 4',
+        title: 'WS2 · อ่านสิ่งที่ลูกค้าไม่พอใจเขียนไว้',
+        simple: 'รีวิวหลายพันรายการเยอะเกินกว่าจะอ่านเองทั้งหมด ผมจึงสร้างกฎ keyword ภาษาโปรตุเกสแบบง่ายที่จัดคำร้องเรียนแต่ละรายการเป็นประเภท แล้วทดสอบว่ากฎถูกบ่อยแค่ไหน',
+        items: [
+          'ใช้รีวิว 1–2 ดาวที่มีข้อความ 9,195 รายการ',
+          'กำหนดประเภทคำร้องเรียน 8 แบบ พร้อมคำสังเกตภาษาโปรตุเกสและกฎตัดสินเมื่อเข้าได้หลายแบบ',
+          'สร้าง label อ้างอิง 200 รายการ (AI เป็นคนติด label ยังรอคนสุ่มตรวจ)',
+          'ปรับกฎด้วยรีวิวที่ 1–100 แล้วทดสอบกับ 101–200: accuracy 0.88, macro-F1 0.82 สุ่มตรวจ 60 รายการถูก 77%',
+          'โมเดลพื้นฐาน TF-IDF + logistic regression จาก 100 label ได้ macro-F1 0.33 กฎจึงดีกว่า',
+        ],
+        result: '60% ของคำร้องเรียนในออเดอร์ตรงเวลาเป็นเรื่องสินค้าหรือการจัดส่ง และในออเดอร์ผู้ขายหลายราย 48% บอกว่าของขาด',
+      },
+      {
+        day: 'ขั้นที่ 5',
+        title: 'WS3 · ทดสอบว่าทำนายออเดอร์ที่จะช้าได้ไหม',
+        simple: 'ผมสร้างโมเดลที่ติดธงออเดอร์เสี่ยงตอนชำระเงิน โดยใช้เฉพาะข้อมูลที่รู้ในตอนนั้น แล้วทดสอบกับเดือนหลังๆ ที่โมเดลไม่เคยเห็น',
+        items: [
+          'ใช้เฉพาะข้อมูลที่รู้ตอนอนุมัติการชำระเงิน: จำนวนวันที่สัญญา ระยะทาง รัฐ หมวดสินค้า ราคา ค่าส่ง น้ำหนัก ช่วงเวลา และประวัติผู้ขาย',
+          'แบ่งข้อมูลตามเวลา: train ม.ค. 2017 – มี.ค. 2018 (64,034 ออเดอร์) test เม.ย. – ส.ค. 2018 (31,985 ออเดอร์)',
+          'กัน data leakage: ประวัติผู้ขายใช้เฉพาะออเดอร์ที่ส่งถึงก่อนวันที่สั่งซื้อ',
+          'เทียบแบบสุ่ม กฎจากประวัติผู้ขาย logistic regression และ LightGBM แล้วเลือก logistic regression (เจอออเดอร์ที่ช้า 24.6% ในกลุ่มเสี่ยงสูงสุด 10%, precision 10.9%)',
+          'ดูปัจจัยด้วย SHAP และเขียน model card พร้อมข้อจำกัด: recall แกว่งจาก 38.6% ถึง 7.1% ตามเดือน',
+        ],
+        result: 'ไปต่อแบบมีเงื่อนไข: ใช้กับมาตรการต้นทุนต่ำเท่านั้น ห้ามใช้ลงโทษผู้ขาย',
+      },
+      {
+        day: 'ขั้นที่ 6',
+        title: 'WS4 · ตัดสินใจว่าจะสร้างอะไร และพิสูจน์ว่าคุ้ม',
+        simple: 'ผมใส่วิธีแก้แต่ละแบบลงในโมเดลการเงินแบบง่าย เก็บไว้เฉพาะแบบที่สมเหตุสมผล เขียน requirement และออกแบบการทดลองที่ยุติธรรมเพื่อพิสูจน์ผลก่อนใช้จริงทั้งระบบ',
+        items: [
+          'Business case ใน Excel มีหลายสถานการณ์ sensitivity และจุดคุ้มทุน: ระบบเตือนล่วงหน้าขาดทุน R$ 40,528 ในปีแรก (กรณีฐาน) และคุ้มทุนเมื่อปริมาณ 12.7 เท่าของปัจจุบัน จึงพักไว้ก่อน',
+          'แนะนำให้ปรับวันสัญญาตามเส้นทาง และ SLA การส่งมอบของผู้ขายแบบแบ่ง tier A/B/C',
+          'FRD 8 requirement เช่น ตารางเส้นทางรายสัปดาห์จากเวลาขนส่งเปอร์เซ็นไทล์ที่ 85 ของ 90 วันล่าสุด',
+          'กระบวนการ To-Be และ wireframe ของ seller portal กับ ops dashboard',
+          'ออกแบบ A/B pilot: กลุ่มละ 4,219 ออเดอร์ (รวม 8,438) ราว 6 สัปดาห์ โดยมีเงื่อนไขว่าอัตราการชำระเงินสำเร็จต้องไม่ลดเกิน 1 จุด',
+        ],
+        result: 'ข้อเสนอที่คิดต้นทุนแล้ว และแผน pilot พร้อมทดลอง ต้นทุนและ pilot เป็นการจำลองที่ระบุไว้ชัดเจน',
+      },
+      {
+        day: 'ขั้นที่ 7',
+        title: 'เล่าเรื่องให้เข้าใจง่าย',
+        simple: 'ทำผลลัพธ์ให้คนอ่านแต่ละแบบรับได้ง่าย ทั้งสไลด์สั้น วิดีโอ และหน้านี้',
+        items: [
+          'Executive deck 10 สไลด์ และวิดีโอมีคำบรรยาย 3 นาที',
+          'README บน GitHub ที่ลิงก์ทุกผลลัพธ์ไปยังหลักฐาน พร้อมขั้นตอนทำซ้ำ',
+        ],
+        result: 'เล่าได้ใน 30 วินาที และอธิบายเชิงลึกได้เมื่อถูกถาม',
+      },
+    ],
+  },
 
   findings: [
     { title: 'ส่งช้าทุกวันทำให้ความพึงพอใจลดลง', text: 'ตรงเวลา 4.29★, ช้า 1–3 วัน 3.29★, ช้า 8 วันขึ้นไป 1.70★' },

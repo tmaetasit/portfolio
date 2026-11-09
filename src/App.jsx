@@ -992,6 +992,27 @@ function OlistPage({ p, next }) {
         <ul className="tags">{p.artefacts.map((x) => <li key={x}>{x}</li>)}</ul>
       </section>
 
+      <section className="olist-sec" aria-labelledby="olist-build">
+        <h2 id="olist-build" className="h-sm">{L.build}</h2>
+        <p className="olist-prose pdpa-build-intro">{p.build.intro}</p>
+        <ol className="pdpa-steps">
+          {p.build.steps.map((st, i) => (
+            <li key={i} className="pdpa-step">
+              <span className="pdpa-step-day mono-label">{st.day}</span>
+              <div className="panel pdpa-step-card">
+                <h3>{st.title}</h3>
+                <p className="pdpa-step-simple"><strong>{L.simple}:</strong> {st.simple}</p>
+                <details>
+                  <summary>{L.details}</summary>
+                  <ul className="points flow">{st.items.map((x) => <li key={x}><Inline text={x} /></li>)}</ul>
+                </details>
+                <p className="pdpa-step-result"><span className="mono-label">{L.outcome}</span>{st.result}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
       <section className="olist-sec" aria-labelledby="olist-findings">
         <h2 id="olist-findings" className="h-sm">{L.findings}</h2>
         <ol className="olist-findings">
